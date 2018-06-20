@@ -183,6 +183,7 @@ public class DialogueEditor : EditorWindow
             Handles.DrawLine(new Vector3(gridSpacing * i, -gridSpacing, 0) + newOffset, new Vector3(gridSpacing * i, position.height, 0f) + newOffset);
         }
 
+
         for (int j = 0; j < heightDivs; j++)
         {
             Handles.DrawLine(new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width, gridSpacing * j, 0f) + newOffset);
@@ -308,6 +309,7 @@ public class DialogueEditor : EditorWindow
     {
         if (selectedInPoint != null && selectedOutPoint == null)
         {
+
             Handles.DrawBezier(
                 selectedInPoint.rect.center,
                 e.mousePosition,
@@ -323,6 +325,7 @@ public class DialogueEditor : EditorWindow
 
         if (selectedOutPoint != null && selectedInPoint == null)
         {
+            
             Handles.DrawBezier(
                 selectedOutPoint.rect.center,
                 e.mousePosition,
@@ -418,7 +421,7 @@ public class DialogueEditor : EditorWindow
             if (i <= 0)
                 d.nodeID = "root";
             else
-                d.nodeID = (i).ToString();
+                d.nodeID = (i+1).ToString();
 
             noders.Add(d);
         }
