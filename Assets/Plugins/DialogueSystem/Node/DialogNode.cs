@@ -73,9 +73,10 @@ namespace DA
         {
             base.Draw();    
 
+
+
             if (!isRoot)
                 inPoint.Draw();
-
 
             outPoint.Draw();
 

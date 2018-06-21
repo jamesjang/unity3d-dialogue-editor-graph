@@ -7,6 +7,7 @@ using DA;
 
 namespace DA
 {
+
     public enum ConnectionPointType { In, Out }
 
     [System.Serializable]
@@ -14,14 +15,22 @@ namespace DA
     {
 
         public string id;
+
         [XmlIgnore]
         public Rect rect;
 
         [XmlIgnore]
         public ConnectionPointType type;
 
-        [XmlIgnore]
+
+        [System.NonSerialized]
         public DialogNode node;
+
+
+        [XmlIgnore]
+        public string inPointIDCon = null;
+        [XmlIgnore]
+        public string outPointIDCon = null;
 
 
         [XmlIgnore]
@@ -40,30 +49,38 @@ namespace DA
             this.OnClickConnectionPoint = OnClickConnectionPoint;
             rect = new Rect(0, 0, 10f, 20f);
 
+
+
+
             this.id = id ?? Guid.NewGuid().ToString();
         }
 
 
         public void Draw()
         {
-            rect.y = node.rect.y + (node.rect.height * 0.5f) - rect.height * 0.5f;
 
-            switch (type)
+            if (this != null && node != null)
             {
-                case ConnectionPointType.In:
-                    rect.x = node.rect.x - rect.width + 8f;
-                    break;
-
-                case ConnectionPointType.Out:
-                    rect.x = node.rect.x + node.rect.width - 8f;
-                    break;
-            }
-
-            if (GUI.Button(rect, "", style))
-            {
-                if (OnClickConnectionPoint != null)
+                rect.y = node.rect.y + (node.rect.height * 0.5f) - rect.height * 0.5f;
+                switch (type)
                 {
-                    OnClickConnectionPoint(this);
+                    case ConnectionPointType.In:
+                        rect.x = node.rect.x - rect.width + 8f;
+                        break;
+
+                    case ConnectionPointType.Out:
+                        rect.x = node.rect.x + node.rect.width - 8f;
+                        break;
+                }
+
+
+                if (GUI.Button(rect, "", style))
+                {
+                    Debug.Log('s');
+                    if (OnClickConnectionPoint != null)
+                    {
+                        OnClickConnectionPoint(this);
+                    }
                 }
             }
         }

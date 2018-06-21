@@ -81,8 +81,8 @@ public class DialogueEditor : EditorWindow
 
     private void Save()
     {
-        XMLOp.Serialize(nodes, "Assets/Resources/nodes.xml");
-        XMLOp.Serialize(connections, "Assets/Resources/connections.xml");
+      //  XMLOp.Serialize(nodes, "Assets/Resources/nodes.xml");
+     //   XMLOp.Serialize(connections, "Assets/Resources/connections.xml");
 
 
         dialogueObject = CreateDialogueObject.Create(saveFileName);
@@ -95,7 +95,12 @@ public class DialogueEditor : EditorWindow
 
             dialogueObject.noders = nodes;
 
-            dialogueObject.connectionlist = connections;
+            foreach(Connections c in connections)
+            {
+                ConnectionStruct cs = new ConnectionStruct(c.inPoint, c.outPoint, c.OnClickRemoveConnection);
+
+                dialogueObject.connectionList.Add(cs);
+            }
 
 
 
@@ -147,6 +152,7 @@ public class DialogueEditor : EditorWindow
         if (results.Length != 0)
         {
             DialogueObject d = (DialogueObject)AssetDatabase.LoadAssetAtPath("Assets/Dialogues/" + fileName + ".asset", typeof(DialogueObject));
+
             if (d)
             {
                 nodes = new List<DialogNode>();
@@ -175,14 +181,16 @@ public class DialogueEditor : EditorWindow
                        ));
                 }
 
-                foreach(Connections connect in d.connectionlist)
+                Debug.Log(d.connectionList.Count);
+                
+                foreach(ConnectionStruct connect in d.connectionList)
                 {
                     var inp = nodes.First(n => n.inPoint.id == connect.inPoint.id).inPoint;
                     var outp = nodes.First(n => n.outPoint.id == connect.outPoint.id).outPoint;
 
                     connections.Add(new Connections(inp, outp, OnClickRemoveConnection));
                 }
-
+                
                 GUI.changed = true;
             }
         }
@@ -218,7 +226,6 @@ public class DialogueEditor : EditorWindow
         GUILayout.Space(5);
         if (GUILayout.Button(new GUIContent("Load"), EditorStyles.toolbarButton, GUILayout.Width(35)))
         {
-            //  Load();
             Debug.Log("loading file" + saveFileName);
             LoadTest(saveFileName);
         }
@@ -435,29 +442,44 @@ public class DialogueEditor : EditorWindow
         {
             connections = new List<Connections>();
         }
-        if (selectedOutPoint.node != null)
+        if (selectedOutPoint != null)
         {
+            
             for (int i = 0; i < connections.Count; i++)
             {
                 if (connections[i].outPoint == selectedOutPoint)
                 {
+                    Debug.Log("found a match");
                     connections[i].inPoint.node.inPointNode = null;
                     OnClickRemoveConnection(connections[i]);
                 }
             }
         }
 
-        if (selectedInPoint.node != null)
+        if (selectedInPoint != null)
         {
+
             for (int i = 0; i < connections.Count; i++)
             {
+
                 if (connections[i].inPoint == selectedInPoint)
                 {
                     connections[i].outPoint.node.outPointNode = null;
                     OnClickRemoveConnection(connections[i]);
+                    Debug.Log("found a match"); 
                 }
             }
-        }
+
+                /*
+                for (int i = 0; i < connections.Count; i++)
+                {
+                    if (connections[i].inPoint.id == selectedInPoint.inPointIDCon)
+                    {
+                        connections[i].outPoint.node.outPointNode = null;
+                        OnClickRemoveConnection(connections[i]);
+                    }
+                }*/
+            }
 
         connections.Add(new Connections(selectedInPoint, selectedOutPoint, OnClickRemoveConnection));
     }
@@ -520,10 +542,6 @@ public class DialogueEditor : EditorWindow
         return noders;
     }
 
-    private void DebugConnection(DialogNode n)
-    {
-      //  Debug.Log("The next conversation item is: " + n.outPoint.id);
-    }
 
 
 
@@ -537,6 +555,9 @@ public class CreateDialogueObject
 
         AssetDatabase.CreateAsset(asset, "Assets/Dialogues/"+filename+".asset");
         AssetDatabase.SaveAssets();
+
+        EditorUtility.SetDirty(asset);
+
         return asset;
     }
 }

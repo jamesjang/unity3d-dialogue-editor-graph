@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,19 +19,39 @@ namespace DA
         }
     }
 
+    [System.Serializable]
+    public struct ConnectionStruct
+    {
+        public ConnectionPoints inPoint;
 
-    [CreateAssetMenu(fileName = "Data", menuName = "Dialogue/Conversation", order = 1)]
+        public ConnectionPoints outPoint;
+
+        public Action<Connections> OnClickRemoveConnection;
+
+
+        public ConnectionStruct(ConnectionPoints inPoint, ConnectionPoints outPoint, Action<Connections> OnClickRemoveConnection)
+        {
+            this.inPoint = inPoint;
+            this.outPoint = outPoint;
+            this.OnClickRemoveConnection = OnClickRemoveConnection;
+        }
+       // connections.Add(new Connections(inp, outp, OnClickRemoveConnection));
+    }
+
+
+
     public class DialogueObject : ScriptableObject
     {
-
         [XmlIgnore]
         public List<ConversationStruct> ConversationSet = new List<ConversationStruct>();
 
         public int dialogueid;
-
+        [XmlIgnore]
         public List<DialogNode> noders = new List<DialogNode>();
 
-        public List<Connections> connectionlist = new List<Connections>();
+        public List<ConnectionStruct> connectionList = new List<ConnectionStruct>();
+
+      //  public List<Connections> connectionlist = new List<Connections>();
 
         public DialogueObject() { }
         public int GetID()
