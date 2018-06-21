@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Xml.Serialization;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,11 +23,14 @@ namespace DA
     public class DialogueObject : ScriptableObject
     {
 
+        [XmlIgnore]
         public List<ConversationStruct> ConversationSet = new List<ConversationStruct>();
 
         public int dialogueid;
 
+        public List<DialogNode> noders = new List<DialogNode>();
 
+        public DialogueObject() { }
         public int GetID()
         {
             return dialogueid;

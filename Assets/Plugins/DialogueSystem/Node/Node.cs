@@ -7,6 +7,7 @@ using UnityEditor;
 
 namespace DA
 {
+    [System.Serializable]
     public class Node
     {
         public Rect rect;

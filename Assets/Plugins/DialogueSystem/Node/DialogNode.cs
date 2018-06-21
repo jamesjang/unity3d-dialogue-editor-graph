@@ -8,6 +8,7 @@ using UnityEditor;
 
 namespace DA
 {
+    [System.Serializable]
     public class DialogNode : Node
     {
         //our conversation text
@@ -18,6 +19,7 @@ namespace DA
 
         public string nodeID;
 
+        [XmlIgnore]
         public Action<DialogNode> OnRemoveNode;
 
         [XmlIgnore]
@@ -81,6 +83,7 @@ namespace DA
             if (!isRoot)
                 inPoint.Draw();
 
+            if (outPoint != null)
             outPoint.Draw();
 
             Rect textRect = new Rect(rect.position.x + 25, rect.position.y + rect.size.y / 2 - 35, rect.size.x - 50, 25);
@@ -99,7 +102,6 @@ namespace DA
 
                     if (e.button == 1 && isSelected && rect.Contains(e.mousePosition))
                     {
-                        Debug.Log("the next conversation node is: " + outPoint.node.nodeID);
                         ProcessContextMenu();
                         e.Use();
 

@@ -5,10 +5,13 @@ public class XMLOp
 {
     public static void Serialize(object item, string path)
     {
-        XmlSerializer serializer = new XmlSerializer(item.GetType());
-        StreamWriter writer = new StreamWriter(path);
-        serializer.Serialize(writer.BaseStream, item);
-        writer.Close();
+        if (item != null)
+        {
+            XmlSerializer serializer = new XmlSerializer(item.GetType());
+            StreamWriter writer = new StreamWriter(path);
+            serializer.Serialize(writer.BaseStream, item);
+            writer.Close();
+        }
     }
 
     public static T Deserialize<T>(string path)

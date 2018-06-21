@@ -26,11 +26,14 @@ public class DialogueEditor : EditorWindow
     private Rect menuBar;
     public DialogueObject dialogueObject;
 
+    public string saveFileName;
+
     [MenuItem("Window/Dialogue Editor")]
     private static void OPenWindow()
     {
         DialogueEditor window = GetWindow<DialogueEditor>();
         window.titleContent = new GUIContent("Dialogue Editor");
+        GUI.FocusControl(null);
     }
 
     private void OnEnable()
@@ -71,7 +74,7 @@ public class DialogueEditor : EditorWindow
         if (GUI.changed)
         {
             Repaint();
-
+  
         }
 
     }
@@ -82,13 +85,15 @@ public class DialogueEditor : EditorWindow
         XMLOp.Serialize(connections, "Assets/Resources/connections.xml");
 
 
-        dialogueObject = CreateDialogueObject.Create();
+        dialogueObject = CreateDialogueObject.Create(saveFileName);
 
         if (dialogueObject)
         {
             dialogueObject.dialogueid = 5;
 
             dialogueObject.ConversationSet = (GenerateDictionaryFromNode());
+
+            dialogueObject.noders = nodes;
 
         }
     }
@@ -129,6 +134,51 @@ public class DialogueEditor : EditorWindow
         }
     }
 
+    private void LoadTest(string fileName)
+    {
+        string[] results = AssetDatabase.FindAssets(fileName);
+
+        if (results.Length != 0)
+        {
+            DialogueObject d = (DialogueObject)AssetDatabase.LoadAssetAtPath("Assets/Dialogues/" + fileName + ".asset", typeof(DialogueObject));
+            if (d)
+            {
+                nodes = new List<DialogNode>();
+              
+
+                for (int i = 0; i < d.noders.Count; i++)
+                {
+                    string inID = d.noders[i].isRoot? "0" : d.noders[i].inPoint.id;
+    
+
+                    nodes.Add(new DialogNode(
+                         d.noders[i].rect.position,
+                         d.noders[i].rect.width,
+                         d.noders[i].rect.height,
+                         nodeStyle,
+                         selectedNodeStyle,
+                         inPointStyle,
+                         outPointStyle,
+                         OnClickInPoint,
+                         OnClickOutPoint,
+                         inID,
+                         d.noders[i].outPoint.id,
+                         d.noders[i].isRoot,
+                         d.noders[i].OnRemoveNode,
+                         d.noders[i].nodeID
+                       ));
+                }
+
+                foreach(ConversationStruct a in d.ConversationSet)
+                {
+                    Debug.Log(a.Key);
+                }
+
+                GUI.changed = true;
+            }
+        }
+    }
+
     public List<ConversationStruct> GenerateDictionaryFromNode()
     {
         List<ConversationStruct> tempDict = new List<ConversationStruct>();
@@ -159,9 +209,14 @@ public class DialogueEditor : EditorWindow
         GUILayout.Space(5);
         if (GUILayout.Button(new GUIContent("Load"), EditorStyles.toolbarButton, GUILayout.Width(35)))
         {
-            Load();
+            //  Load();
+            Debug.Log("loading file" + saveFileName);
+            LoadTest(saveFileName);
         }
 
+        GUILayout.Space(5);
+        GUILayout.Label("Save File Name: ", GUILayout.Width(100) );
+        saveFileName = GUILayout.TextField( saveFileName, GUILayout.Width(200));
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
     }
@@ -224,6 +279,7 @@ public class DialogueEditor : EditorWindow
                 if (e.button == 1)
                 {
                     ProcessContextMenu(e.mousePosition);
+                    GUI.FocusControl(null);
                 }
                 break;
             case EventType.MouseDrag:
@@ -467,12 +523,11 @@ public class DialogueEditor : EditorWindow
 
 public class CreateDialogueObject
 {
-    [MenuItem("Assets/Create/Inventory Item List")]
-    public static DialogueObject Create()
+    public static DialogueObject Create(string filename)
     {
         DialogueObject asset = ScriptableObject.CreateInstance<DialogueObject>();
 
-        AssetDatabase.CreateAsset(asset, "Assets/tester.asset");
+        AssetDatabase.CreateAsset(asset, "Assets/Dialogues/"+filename+".asset");
         AssetDatabase.SaveAssets();
         return asset;
     }
