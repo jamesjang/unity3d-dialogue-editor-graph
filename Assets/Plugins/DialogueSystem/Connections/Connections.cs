@@ -42,6 +42,10 @@ namespace DA
             {
                 if (OnClickRemoveConnection != null)
                 {
+                    //breaks node reference 
+                    this.inPoint.node.inPointNode = null;
+                    this.outPoint.node.outPointNode = null;
+
                     OnClickRemoveConnection(this);
                 }
             }

@@ -71,8 +71,7 @@ public class DialogueEditor : EditorWindow
         if (GUI.changed)
         {
             Repaint();
-            if (nodes != null)
-                Debug.Log(nodes.Count);
+
         }
 
     }
@@ -394,7 +393,13 @@ public class DialogueEditor : EditorWindow
                 if (connections[i].inPoint == node.inPoint || connections[i].outPoint == node.outPoint)
                 {
                     connectionsToRemove.Add(connections[i]);
+
+                    Debug.Log(connections[i].inPoint.node.nodeID);
+                    //removal magic here
+                    // nod
                 }
+
+
             }
 
             for (int i = 0; i < connectionsToRemove.Count; i++)
