@@ -7,10 +7,14 @@ using DA;
 
 namespace DA
 {
+
+    [System.Serializable]
     public class Connections
     {
         public ConnectionPoints inPoint;
+
         public ConnectionPoints outPoint;
+
         [XmlIgnore]
         public Action<Connections> OnClickRemoveConnection;
 
@@ -28,6 +32,7 @@ namespace DA
 
         public void Draw()
         {
+            
             Handles.DrawBezier(
                 inPoint.rect.center,
                 outPoint.rect.center,
@@ -42,6 +47,8 @@ namespace DA
             {
                 if (OnClickRemoveConnection != null)
                 {
+
+
                     //breaks node reference 
                     this.inPoint.node.inPointNode = null;
                     this.outPoint.node.outPointNode = null;

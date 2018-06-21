@@ -74,8 +74,10 @@ namespace DA
                             GUI.changed = true;
                             isSelected = true;
                             style = selectedNodeStyle;
-
-
+                            if (outPoint != null)
+                                Debug.Log("a" + outPoint.node.nodeID);
+                            if (inPoint != null)
+                                Debug.Log("b" + inPoint.node.nodeID);
                         }
                         else
                         {

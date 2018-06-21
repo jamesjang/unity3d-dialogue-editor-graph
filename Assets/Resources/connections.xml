@@ -2,10 +2,10 @@
 <ArrayOfConnections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Connections>
     <inPoint>
-      <id>7baa9d71-d813-44d2-9e34-77c4bb8ce3b9</id>
+      <id>c1f34213-b351-4b5f-84a2-64997d4f20e0</id>
     </inPoint>
     <outPoint>
-      <id>6294dd3b-27a5-4c7b-a809-9fc803c0c7e7</id>
+      <id>1f9aaed0-1bdf-4841-a795-6e946f5e67d5</id>
     </outPoint>
   </Connections>
 </ArrayOfConnections>

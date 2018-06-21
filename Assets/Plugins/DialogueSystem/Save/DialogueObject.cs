@@ -30,6 +30,8 @@ namespace DA
 
         public List<DialogNode> noders = new List<DialogNode>();
 
+        public List<Connections> connectionlist = new List<Connections>();
+
         public DialogueObject() { }
         public int GetID()
         {
@@ -39,6 +41,19 @@ namespace DA
         public List<ConversationStruct> GetConversationSet()
         {
             return ConversationSet;
+        }
+
+        public ConversationStruct GetIndex(string nodeID)
+        {
+            for (int i = 0; i < GetConversationSet().Count; i++)
+            {
+                if (ConversationSet[i].Key == int.Parse(nodeID))
+                {
+                    return ConversationSet[i];
+                }
+            }
+
+            return new ConversationStruct();
         }
 
     }

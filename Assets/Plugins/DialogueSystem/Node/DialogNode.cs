@@ -35,23 +35,20 @@ namespace DA
 
         public DialogNode(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, Action<ConnectionPoints> OnClickInPoint,
                             Action<ConnectionPoints> OnClickOutPoint, string inPointID, string outPointID, 
-                            bool isRoot, Action<DialogNode> OnClickRemoveNode, string id)
+                            bool isRoot, Action<DialogNode> OnClickRemoveNode, string id, string cs)
         {
             rect = new Rect(position.x, position.y, width, height);
             style = nodeStyle;
 
-            if (!isRoot)
-            {
-                inPoint = new ConnectionPoints(this, ConnectionPointType.In, inPointStyle, OnClickInPoint, inPointID);
-                nodeID = id;
-            }
-            else
-                nodeID = "root";
+            nodeID = id;
+
 
             this.isRoot = isRoot;
 
+            conversationText = cs;
 
             OnRemoveNode = OnClickRemoveNode;
+            inPoint = new ConnectionPoints(this, ConnectionPointType.In, inPointStyle, OnClickInPoint, inPointID);
             outPoint = new ConnectionPoints(this, ConnectionPointType.Out, outPointStyle, OnClickOutPoint, outPointID);
             defaultNodeStyle = nodeStyle;
             selectedNodeStyle = selectedStyle;
@@ -62,14 +59,10 @@ namespace DA
                             Action<ConnectionPoints> OnClickOutPoint, bool isRoot, Action<DialogNode> OnClickRemoveNode, string id)
                             : base(position, width, height, nodeStyle, selectedStyle, inPointStyle, outPointStyle)
         {
-            if (!isRoot)
-            {
-                inPoint = new ConnectionPoints(this, ConnectionPointType.In, inPointStyle, OnClickInPoint);
-                nodeID = id;
-            }
-            else
-                nodeID = "root";
+            inPoint = new ConnectionPoints(this, ConnectionPointType.In, inPointStyle, OnClickInPoint);
 
+
+            nodeID = id;
 
             this.isRoot = isRoot;
             OnRemoveNode = OnClickRemoveNode;
@@ -78,12 +71,12 @@ namespace DA
 
         public override void Draw()
         {
-            base.Draw();
+            base.Draw();    
 
             if (!isRoot)
                 inPoint.Draw();
 
-            if (outPoint != null)
+
             outPoint.Draw();
 
             Rect textRect = new Rect(rect.position.x + 25, rect.position.y + rect.size.y / 2 - 35, rect.size.x - 50, 25);

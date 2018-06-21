@@ -9,6 +9,7 @@ namespace DA
 {
     public enum ConnectionPointType { In, Out }
 
+    [System.Serializable]
     public class ConnectionPoints
     {
 

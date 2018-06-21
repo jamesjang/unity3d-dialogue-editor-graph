@@ -95,6 +95,10 @@ public class DialogueEditor : EditorWindow
 
             dialogueObject.noders = nodes;
 
+            dialogueObject.connectionlist = connections;
+
+
+
         }
     }
 
@@ -107,6 +111,7 @@ public class DialogueEditor : EditorWindow
         connections = new List<Connections>();
         foreach (var nodeDeserialized in nodesDeserialized)
         {
+            /*
             nodes.Add(new DialogNode(
                 nodeDeserialized.rect.position,
                 nodeDeserialized.rect.width,
@@ -120,10 +125,11 @@ public class DialogueEditor : EditorWindow
                 nodeDeserialized.inPoint.id,
                 nodeDeserialized.outPoint.id,
                 nodeDeserialized.isRoot,
-                nodeDeserialized.OnRemoveNode,
+                OnClickRemoveNode,
                 nodeDeserialized.nodeID
                 )
             );
+            */
         }
 
         foreach (var connectionDeserialized in connectionsDeserialized)
@@ -144,13 +150,12 @@ public class DialogueEditor : EditorWindow
             if (d)
             {
                 nodes = new List<DialogNode>();
-              
-
+                ClearConnectionSelection();
+                connections = new List<Connections>();
+                    
                 for (int i = 0; i < d.noders.Count; i++)
                 {
-                    string inID = d.noders[i].isRoot? "0" : d.noders[i].inPoint.id;
-    
-
+                    string t = d.GetIndex(d.noders[i].nodeID).Value;
                     nodes.Add(new DialogNode(
                          d.noders[i].rect.position,
                          d.noders[i].rect.width,
@@ -161,17 +166,21 @@ public class DialogueEditor : EditorWindow
                          outPointStyle,
                          OnClickInPoint,
                          OnClickOutPoint,
-                         inID,
+                         d.noders[i].inPoint.id,
                          d.noders[i].outPoint.id,
                          d.noders[i].isRoot,
-                         d.noders[i].OnRemoveNode,
-                         d.noders[i].nodeID
+                         OnClickRemoveNode,
+                         d.noders[i].nodeID, 
+                         t
                        ));
                 }
 
-                foreach(ConversationStruct a in d.ConversationSet)
+                foreach(Connections connect in d.connectionlist)
                 {
-                    Debug.Log(a.Key);
+                    var inp = nodes.First(n => n.inPoint.id == connect.inPoint.id).inPoint;
+                    var outp = nodes.First(n => n.outPoint.id == connect.outPoint.id).outPoint;
+
+                    connections.Add(new Connections(inp, outp, OnClickRemoveConnection));
                 }
 
                 GUI.changed = true;
@@ -185,7 +194,7 @@ public class DialogueEditor : EditorWindow
 
         foreach (DialogNode n in nodes)
         {
-            var element = new ConversationStruct(1, n.conversationText);
+            var element = new ConversationStruct(int.Parse(n.nodeID), n.conversationText);
             tempDict.Add(element);
 
             Debug.Log(element);
@@ -467,6 +476,7 @@ public class DialogueEditor : EditorWindow
 
             List<Connections> connectionsToRemove = new List<Connections>();
 
+            Debug.Log(connections.Count);
             for (int i = 0; i < connections.Count; i++)
             {
                 if (connections[i].inPoint == node.inPoint || connections[i].outPoint == node.outPoint)
@@ -501,10 +511,8 @@ public class DialogueEditor : EditorWindow
         for (int i = 0; i < nodes.Count; i++)
         {
             DialogNode d = nodes[i];
-            if (i <= 0)
-                d.nodeID = "root";
-            else
-                d.nodeID = (i+1).ToString();
+
+            d.nodeID = (i+1).ToString();
 
             noders.Add(d);
         }
