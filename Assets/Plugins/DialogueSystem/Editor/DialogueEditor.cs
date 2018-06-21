@@ -370,6 +370,29 @@ public class DialogueEditor : EditorWindow
         {
             connections = new List<Connections>();
         }
+        if (selectedOutPoint.node != null)
+        {
+            for (int i = 0; i < connections.Count; i++)
+            {
+                if (connections[i].outPoint == selectedOutPoint)
+                {
+                    connections[i].inPoint.node.inPointNode = null;
+                    OnClickRemoveConnection(connections[i]);
+                }
+            }
+        }
+
+        if (selectedInPoint.node != null)
+        {
+            for (int i = 0; i < connections.Count; i++)
+            {
+                if (connections[i].inPoint == selectedInPoint)
+                {
+                    connections[i].outPoint.node.outPointNode = null;
+                    OnClickRemoveConnection(connections[i]);
+                }
+            }
+        }
 
         connections.Add(new Connections(selectedInPoint, selectedOutPoint, OnClickRemoveConnection));
     }
@@ -394,9 +417,8 @@ public class DialogueEditor : EditorWindow
                 {
                     connectionsToRemove.Add(connections[i]);
 
-                    Debug.Log(connections[i].inPoint.node.nodeID);
-                    //removal magic here
-                    // nod
+                    connections[i].inPoint.node.inPointNode = null;
+                    connections[i].outPoint.node.outPointNode = null;
                 }
 
 
