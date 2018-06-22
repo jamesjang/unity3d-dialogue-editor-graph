@@ -21,9 +21,11 @@ namespace DA
         [XmlIgnore]
         public GUIStyle style;
 
+        [System.NonSerialized]
         //node that connects to in
         public ConnectionPoints inPoint;
 
+        [System.NonSerialized]
         //node that connects to out
         public ConnectionPoints outPoint;
 

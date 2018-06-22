@@ -81,10 +81,6 @@ public class DialogueEditor : EditorWindow
 
     private void Save()
     {
-      //  XMLOp.Serialize(nodes, "Assets/Resources/nodes.xml");
-     //   XMLOp.Serialize(connections, "Assets/Resources/connections.xml");
-
-
         dialogueObject = CreateDialogueObject.Create(saveFileName);
 
         if (dialogueObject)
@@ -93,7 +89,7 @@ public class DialogueEditor : EditorWindow
 
             dialogueObject.ConversationSet = (GenerateDictionaryFromNode());
 
-            dialogueObject.noders = nodes;
+         //   dialogueObject.noders = nodes;
 
             foreach(Connections c in connections)
             {
@@ -102,6 +98,12 @@ public class DialogueEditor : EditorWindow
                 dialogueObject.connectionList.Add(cs);
             }
 
+            foreach(DialogNode node in nodes)
+            {
+                NodeInformation nNode = new NodeInformation(node.nodeID, node.rect, node.inPoint.id, node.outPoint.id, node.conversationText, node.isRoot);
+
+                dialogueObject.nodeInfoList.Add(nNode);
+            }
 
 
         }
@@ -158,7 +160,30 @@ public class DialogueEditor : EditorWindow
                 nodes = new List<DialogNode>();
                 ClearConnectionSelection();
                 connections = new List<Connections>();
+
+                for (int i =0; i < d.nodeInfoList.Count; i++)
+                {
+                    nodes.Add(new DialogNode(
+                         d.nodeInfoList[i].rect.position,
+                         d.nodeInfoList[i].rect.width,
+                         d.nodeInfoList[i].rect.height,
+                         nodeStyle,
+                         selectedNodeStyle,
+                         inPointStyle,
+                         outPointStyle,
+                         OnClickInPoint,
+                         OnClickOutPoint,
+                         d.nodeInfoList[i].inPointID,
+                         d.nodeInfoList[i].outPointID,
+                         d.nodeInfoList[i].isRoot,
+                         OnClickRemoveNode,
+                         d.nodeInfoList[i].nodeID,
+                         d.nodeInfoList[i].ConversationText
+                        ));
+
+                }
                     
+                /*
                 for (int i = 0; i < d.noders.Count; i++)
                 {
                     string t = d.GetIndex(d.noders[i].nodeID).Value;
@@ -180,8 +205,9 @@ public class DialogueEditor : EditorWindow
                          t
                        ));
                 }
-
+                */
                 Debug.Log(d.connectionList.Count);
+                
                 
                 foreach(ConnectionStruct connect in d.connectionList)
                 {

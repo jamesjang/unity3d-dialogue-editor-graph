@@ -22,8 +22,6 @@ namespace DA
         [XmlIgnore]
         public ConnectionPointType type;
 
-
-        [System.NonSerialized]
         public DialogNode node;
 
 
@@ -48,9 +46,6 @@ namespace DA
             this.style = style;
             this.OnClickConnectionPoint = OnClickConnectionPoint;
             rect = new Rect(0, 0, 10f, 20f);
-
-
-
 
             this.id = id ?? Guid.NewGuid().ToString();
         }

@@ -35,7 +35,29 @@ namespace DA
             this.outPoint = outPoint;
             this.OnClickRemoveConnection = OnClickRemoveConnection;
         }
-       // connections.Add(new Connections(inp, outp, OnClickRemoveConnection));
+        // connections.Add(new Connections(inp, outp, OnClickRemoveConnection));
+    }
+    [System.Serializable]
+    public struct NodeInformation
+    {
+        public string nodeID;
+        public Rect rect;
+        public string inPointID;
+        public string outPointID;
+        public string ConversationText;
+        public bool isRoot;
+        
+        public NodeInformation(string nodeID, Rect rect, string inID, string outID, string CT, bool isRoot)
+        {
+            this.nodeID = nodeID;
+            this.rect = rect;
+            this.inPointID = inID;
+            this.outPointID = outID;
+            this.ConversationText = CT;
+            this.isRoot = isRoot;
+        }
+
+
     }
 
 
@@ -46,10 +68,11 @@ namespace DA
         public List<ConversationStruct> ConversationSet = new List<ConversationStruct>();
 
         public int dialogueid;
-        [XmlIgnore]
-        public List<DialogNode> noders = new List<DialogNode>();
+     //   [XmlIgnore]    //    public List<DialogNode> noders = new List<DialogNode>();
 
         public List<ConnectionStruct> connectionList = new List<ConnectionStruct>();
+
+        public List<NodeInformation> nodeInfoList = new List<NodeInformation>();
 
       //  public List<Connections> connectionlist = new List<Connections>();
 

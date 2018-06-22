@@ -14,7 +14,6 @@ namespace DA
         //our conversation text
         public string conversationText = "Input conversation";
 
-
         public bool isRoot;
 
         public string nodeID;

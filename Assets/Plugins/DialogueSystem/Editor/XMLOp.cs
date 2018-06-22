@@ -12,7 +12,7 @@ public class XMLOp
             serializer.Serialize(writer.BaseStream, item);
             writer.Close();
         }
-    }
+    }   
 
     public static T Deserialize<T>(string path)
     {
