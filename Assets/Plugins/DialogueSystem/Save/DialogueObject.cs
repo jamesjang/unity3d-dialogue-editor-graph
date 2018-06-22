@@ -35,7 +35,7 @@ namespace DA
             this.outPoint = outPoint;
             this.OnClickRemoveConnection = OnClickRemoveConnection;
         }
-        // connections.Add(new Connections(inp, outp, OnClickRemoveConnection));
+
     }
     [System.Serializable]
     public struct NodeInformation
@@ -68,13 +68,10 @@ namespace DA
         public List<ConversationStruct> ConversationSet = new List<ConversationStruct>();
 
         public int dialogueid;
-     //   [XmlIgnore]    //    public List<DialogNode> noders = new List<DialogNode>();
 
         public List<ConnectionStruct> connectionList = new List<ConnectionStruct>();
 
         public List<NodeInformation> nodeInfoList = new List<NodeInformation>();
-
-      //  public List<Connections> connectionlist = new List<Connections>();
 
         public DialogueObject() { }
         public int GetID()

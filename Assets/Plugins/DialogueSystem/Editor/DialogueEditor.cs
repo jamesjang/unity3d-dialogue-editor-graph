@@ -28,6 +28,8 @@ public class DialogueEditor : EditorWindow
 
     public string saveFileName;
 
+    public DialogueObject source;
+
     [MenuItem("Window/Dialogue Editor")]
     private static void OPenWindow()
     {
@@ -74,7 +76,9 @@ public class DialogueEditor : EditorWindow
         if (GUI.changed)
         {
             Repaint();
-  
+
+            if (source != null)
+                saveFileName = source.name;
         }
 
     }
@@ -183,29 +187,7 @@ public class DialogueEditor : EditorWindow
 
                 }
                     
-                /*
-                for (int i = 0; i < d.noders.Count; i++)
-                {
-                    string t = d.GetIndex(d.noders[i].nodeID).Value;
-                    nodes.Add(new DialogNode(
-                         d.noders[i].rect.position,
-                         d.noders[i].rect.width,
-                         d.noders[i].rect.height,
-                         nodeStyle,
-                         selectedNodeStyle,
-                         inPointStyle,
-                         outPointStyle,
-                         OnClickInPoint,
-                         OnClickOutPoint,
-                         d.noders[i].inPoint.id,
-                         d.noders[i].outPoint.id,
-                         d.noders[i].isRoot,
-                         OnClickRemoveNode,
-                         d.noders[i].nodeID, 
-                         t
-                       ));
-                }
-                */
+             
                 Debug.Log(d.connectionList.Count);
                 
                 
@@ -255,10 +237,10 @@ public class DialogueEditor : EditorWindow
             Debug.Log("loading file" + saveFileName);
             LoadTest(saveFileName);
         }
-
         GUILayout.Space(5);
-        GUILayout.Label("Save File Name: ", GUILayout.Width(100) );
-        saveFileName = GUILayout.TextField( saveFileName, GUILayout.Width(200));
+        GUILayout.Label("Save File: ", GUILayout.Width(100));
+        source = (DialogueObject)EditorGUILayout.ObjectField(source, typeof(DialogueObject), true);
+
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
     }
