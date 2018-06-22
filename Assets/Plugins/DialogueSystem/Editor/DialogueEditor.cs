@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml;
 using System.Collections.Generic;
 using UnityEditor;
@@ -29,6 +30,7 @@ public class DialogueEditor : EditorWindow
     public string saveFileName;
 
     public DialogueObject source;
+    DialogueObject a;
 
     [MenuItem("Window/Dialogue Editor")]
     private static void OPenWindow()
@@ -77,15 +79,21 @@ public class DialogueEditor : EditorWindow
         {
             Repaint();
 
+            
+
+        }
+        if (Event.current.commandName == "ObjectSelectorUpdated")
+        {
             if (source != null)
-                saveFileName = source.name;
+                LoadTest(source.name);
+
         }
 
     }
 
-    private void Save()
+    private void Save(string fName)
     {
-        dialogueObject = CreateDialogueObject.Create(saveFileName);
+        dialogueObject = CreateDialogueObject.Create(fName);
 
         if (dialogueObject)
         {
@@ -208,14 +216,16 @@ public class DialogueEditor : EditorWindow
     {
         List<ConversationStruct> tempDict = new List<ConversationStruct>();
 
-        foreach (DialogNode n in nodes)
+        if (nodes.Count > 0)
         {
-            var element = new ConversationStruct(int.Parse(n.nodeID), n.conversationText);
-            tempDict.Add(element);
+            foreach (DialogNode n in nodes)
+            {
+                var element = new ConversationStruct(int.Parse(n.nodeID), n.conversationText);
+                tempDict.Add(element);
 
-            Debug.Log(element);
+                Debug.Log(element);
+            }
         }
-
 
         return tempDict;
     }
@@ -229,16 +239,23 @@ public class DialogueEditor : EditorWindow
 
         if (GUILayout.Button(new GUIContent("Save"), EditorStyles.toolbarButton, GUILayout.Width(35)))
         {
-            Save();
+
+            var path = EditorUtility.SaveFilePanel(
+                "Save as object",
+                "Assets/Dialogues/",
+                "",
+                "asset");
+
+            string fn = Path.GetFileName(path);
+            string[] arr = fn.Split('.');
+            
+            Save(Path.GetFileName(arr[0]));
         }
         GUILayout.Space(5);
-        if (GUILayout.Button(new GUIContent("Load"), EditorStyles.toolbarButton, GUILayout.Width(35)))
-        {
-            Debug.Log("loading file" + saveFileName);
-            LoadTest(saveFileName);
-        }
-        GUILayout.Space(5);
-        GUILayout.Label("Save File: ", GUILayout.Width(100));
+
+        GUILayout.Label("Save File: ", GUILayout.Width(65));
+
+
         source = (DialogueObject)EditorGUILayout.ObjectField(source, typeof(DialogueObject), true);
 
         GUILayout.EndHorizontal();

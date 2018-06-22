@@ -49,6 +49,7 @@ namespace DA
             OnRemoveNode = OnClickRemoveNode;
             inPoint = new ConnectionPoints(this, ConnectionPointType.In, inPointStyle, OnClickInPoint, inPointID);
             outPoint = new ConnectionPoints(this, ConnectionPointType.Out, outPointStyle, OnClickOutPoint, outPointID);
+
             defaultNodeStyle = nodeStyle;
             selectedNodeStyle = selectedStyle;
         }
@@ -70,20 +71,21 @@ namespace DA
 
         public override void Draw()
         {
-            base.Draw();    
+            if (this != null)
+            {
+                base.Draw();
 
+                if (!isRoot)
+                    inPoint.Draw();
 
+                outPoint.Draw();
 
-            if (!isRoot)
-                inPoint.Draw();
+                Rect textRect = new Rect(rect.position.x + 25, rect.position.y + rect.size.y / 2 - 35, rect.size.x - 50, 25);
 
-            outPoint.Draw();
+                conversationText = GUI.TextField(textRect, conversationText, 500);
 
-            Rect textRect = new Rect(rect.position.x + 25, rect.position.y + rect.size.y / 2 - 35, rect.size.x - 50, 25);
-
-            conversationText = GUI.TextField(textRect, conversationText, 500);
-
-            GUI.Label(rect, "Node Id is: " + nodeID);
+                GUI.Label(rect, "Node Id is: " + nodeID);
+            }
         }
 
         public override bool ProcessEvents(Event e)
