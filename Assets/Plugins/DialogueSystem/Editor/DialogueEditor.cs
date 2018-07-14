@@ -9,9 +9,12 @@ using DA;
 
 public class DialogueEditor : EditorWindow
 {
+    [SerializeField]
     private List<DialogNode> nodes;
     
     private GUIStyle nodeStyle;
+
+    [SerializeField]
     private List<Connections> connections;
 
     private GUIStyle inPointStyle;
@@ -59,8 +62,18 @@ public class DialogueEditor : EditorWindow
         selectedNodeStyle = new GUIStyle();
         selectedNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
         selectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
+
+        if (source.name != null)
+        {
+            LoadTest(source.name);
+        }
     }
 
+    private void OnDisable()
+    {
+        Debug.Log("Diabled");
+
+    }
     private void OnGUI()
     {
         DrawGrid(20, 0.2f, Color.gray);
@@ -304,9 +317,19 @@ public class DialogueEditor : EditorWindow
     {
         if (connections != null)
         {
+
             for (int i = 0; i < connections.Count; i++)
             {
                 connections[i].Draw();
+                if (i == 0)
+                {
+                    connections[i].outPoint.node = nodes[0];
+                }
+                if (i == 1)
+                {
+                    connections[i].outPoint.node = nodes[1];
+
+                }
             }
         }
     }

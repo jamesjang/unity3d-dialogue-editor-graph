@@ -21,10 +21,9 @@ namespace DA
         [XmlIgnore]
         public Action<DialogNode> OnRemoveNode;
 
-        [XmlIgnore]
+        [SerializeField]
         public DialogNode inPointNode;
-
-        [XmlIgnore]
+        [SerializeField]
         public DialogNode outPointNode;
 
         public DialogNode()
@@ -87,6 +86,7 @@ namespace DA
                 GUI.Label(rect, "Node Id is: " + nodeID);
             }
         }
+
 
         public override bool ProcessEvents(Event e)
         {

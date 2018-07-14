@@ -7,10 +7,12 @@ using UnityEditor;
 
 namespace DA
 {
+    [System.Serializable]
     public class Node
     {
+        [SerializeField]
         public Rect rect;
-        [XmlIgnore]
+
         public string title;
 
         [XmlIgnore]
@@ -21,11 +23,11 @@ namespace DA
         [XmlIgnore]
         public GUIStyle style;
 
-        [System.NonSerialized]
+        [SerializeField]
         //node that connects to in
         public ConnectionPoints inPoint;
 
-        [System.NonSerialized]
+        [SerializeField]
         //node that connects to out
         public ConnectionPoints outPoint;
 

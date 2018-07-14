@@ -11,8 +11,9 @@ namespace DA
     [System.Serializable]
     public class Connections
     {
+        [SerializeField]
         public ConnectionPoints inPoint;
-
+        [SerializeField]
         public ConnectionPoints outPoint;
 
         [XmlIgnore]

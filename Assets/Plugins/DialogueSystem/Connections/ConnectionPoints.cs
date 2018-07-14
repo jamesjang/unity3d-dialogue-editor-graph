@@ -16,25 +16,24 @@ namespace DA
 
         public string id;
 
-        [XmlIgnore]
+        [SerializeField]
         public Rect rect;
 
-        [XmlIgnore]
         public ConnectionPointType type;
 
         public DialogNode node;
 
 
-        [XmlIgnore]
+
         public string inPointIDCon = null;
-        [XmlIgnore]
+
         public string outPointIDCon = null;
 
 
-        [XmlIgnore]
+
         public GUIStyle style;
 
-        [XmlIgnore]
+
         public Action<ConnectionPoints> OnClickConnectionPoint;
 
         public ConnectionPoints() { }
@@ -53,7 +52,8 @@ namespace DA
 
         public void Draw()
         {
-
+    
+            //Debug.Log(node.rect);
             if (this != null && node != null)
             {
                 rect.y = node.rect.y + (node.rect.height * 0.5f) - rect.height * 0.5f;
